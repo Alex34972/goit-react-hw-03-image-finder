@@ -4,19 +4,19 @@ import PropTypes from "prop-types";
 import s from "./Searchbar.module.css";
 export default class Searchbar extends Component {
   state = {
-    imagesName: "",
+    searchImages: "",
   };
   handleNameChange = (event) => {
-    this.setState({ imagesName: event.currentTarget.value.toLowerCase() });
+    this.setState({ searchImages: event.currentTarget.value.toLowerCase() });
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    const { imagesName } = this.state;
-    this.props.onSubmit(imagesName);
-    this.setState({ imagesName: "" });
+    const { searchImages } = this.state;
+    this.props.onSubmit(searchImages);
+    this.setState({ searchImages: "" });
   };
   render() {
-    const { imagesName } = this.state;
+    const { searchImages } = this.state;
     return (
       <header className={s.Searchbar}>
         <form className={s.SearchForm} onSubmit={this.handleSubmit}>
@@ -30,7 +30,7 @@ export default class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={imagesName}
+            value={searchImages}
             onChange={this.handleNameChange}
           />
         </form>
