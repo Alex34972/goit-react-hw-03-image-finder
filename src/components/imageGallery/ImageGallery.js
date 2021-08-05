@@ -1,56 +1,42 @@
 import { Component } from "react";
+import { toast } from "react-toastify";
 import ImageGalleryItem from "../imageGalleryItem";
 import imageAPI from "../../services/image-api";
 import s from "./ImageGallery.module.css";
-const Status = {
-  IDLE: "idle",
-  PENDING: "pending",
-  RESOLVED: "resolved",
-  REJECTED: "rejected",
-};
+import LoaderComponent from "../loader/LoaderComponent";
 
 export default class ImagesInfo extends Component {
   state = {
     images: null,
     error: null,
-    status: Status.PENDING,
+    loading: true,
   };
 
   componentDidUpdate(prevProps, prevState) {
     const prevName = prevProps.imagesName;
     const nextName = this.props.imagesName;
-    console.log(prevName);
-    console.log(nextName);
     if (prevName !== nextName) {
-      this.setState({ status: Status.PENDING });
       imageAPI
         .fetchImages(nextName)
-        .then((images) =>
-          this.setState({ images: images.hits, status: Status.RESOLVED })
-        )
-        .catch((error) => this.setState({ error, status: Status.REJECTED }));
+        .then((images) => this.setState({ images: images.hits }))
+        .catch((error) => toast(error))
+        .finally(() => this.setState({ loading: false }));
     }
   }
-
+  handleOpenModal = (e) => {
+    if (e.target !== e.currentTarget) {
+      this.props.onClick();
+    }
+  };
   render() {
-    const { images } = this.state;
-    //if (status === "idle") {
-    // return <div>Введите имя покемона.</div>;
-    //}
-    console.log(images);
+    const { images, loading } = this.state;
     return (
-      <ul className={s.ImageGallery}>
-        {images && <ImageGalleryItem images={images} />}
-      </ul>
+      <>
+        {loading && <LoaderComponent />}
+        <ul className={s.ImageGallery} onClick={this.handleOpenModal}>
+          {images && <ImageGalleryItem images={images} />}
+        </ul>
+      </>
     );
-
-    //if (status === "rejected") {
-    //  return <ImageGallery message={error.message} />;
-    //}
-
-    //if (status === "resolved") {
-    //  return <ImageGallery images={images} />;
-    //}
   }
 }
-//<ImageGalleryItem images={images} />
