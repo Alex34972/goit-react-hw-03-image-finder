@@ -1,6 +1,6 @@
 import React from "react";
 import { Component } from "react";
-import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 import s from "./Searchbar.module.css";
 export default class Searchbar extends Component {
   state = {
@@ -11,16 +11,12 @@ export default class Searchbar extends Component {
   };
   handleSubmit = (event) => {
     event.preventDefault();
-
-    if (this.state.imagesName.trim() === "") {
-      toast.error("Введите название картинок.");
-      return;
-    }
-
-    this.props.onSubmit(this.state.imagesName);
+    const { imagesName } = this.state;
+    this.props.onSubmit(imagesName);
     this.setState({ imagesName: "" });
   };
   render() {
+    const { imagesName } = this.state;
     return (
       <header className={s.Searchbar}>
         <form className={s.SearchForm} onSubmit={this.handleSubmit}>
@@ -34,7 +30,7 @@ export default class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={this.state.imagesName}
+            value={imagesName}
             onChange={this.handleNameChange}
           />
         </form>
@@ -42,3 +38,6 @@ export default class Searchbar extends Component {
     );
   }
 }
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
