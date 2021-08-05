@@ -15,13 +15,13 @@ export default class App extends Component {
     modalContent: "",
     page: 1,
     renderImages: [],
-    isLoading: true,
+    isLoading: false,
     openModal: false,
   };
 
-  hadleChangeQuery = (query) => {
+  hadleChangeImage = (image) => {
     this.setState({
-      searchImages: query,
+      searchImages: image,
       page: 1,
       renderImages: [],
     });
@@ -32,7 +32,7 @@ export default class App extends Component {
       return { page: page + 1 };
     });
   };
-  handleScroll = () => {
+  onScroll = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
@@ -41,10 +41,9 @@ export default class App extends Component {
   toggleModal = () => {
     this.setState(({ openModal }) => ({ openModal: !openModal }));
   };
-  //toggleLoading = () => {
-  //  this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
-  //};
-
+  toggleLoading = () => {
+    this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
+  };
   modalContentSet = (itemId) => {
     const { renderImages } = this.state;
     const element = renderImages.find(({ id }) => id === itemId);
@@ -53,6 +52,8 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { searchImages, page } = this.state;
     if (prevState.searchImages !== searchImages || prevState.page !== page) {
+      this.toggleLoading();
+      this.onScroll();
       imageAPI
         .fetchImages(searchImages, page)
         .then(({ hits }) => {
@@ -60,11 +61,9 @@ export default class App extends Component {
             return { renderImages: [...renderImages, ...hits] };
           });
         })
-        .then(this.handleScroll)
+        .then(this.onScroll)
         .catch((error) => toast(error))
-        .finally(() => {
-          this.setState({ isLoading: !false });
-        });
+        .finally(this.toggleLoading);
     }
   }
   render() {
@@ -72,20 +71,23 @@ export default class App extends Component {
       this.state;
     const isNotLastPage = renderImages.length / page === 12;
     console.log(isNotLastPage);
-    const btnBeView = renderImages.length > 0 && isLoading && isNotLastPage;
+    const btnBeView = renderImages.length > 0 && isNotLastPage;
     console.log(btnBeView);
     return (
-      <>
-        <Searchbar onSubmit={this.hadleChangeQuery} />
-        <div className={s.App}>
-          {!isLoading && <LoaderComponent />}
-          <ImageGallery images={renderImages} onClick={this.toggleModal} />
-        </div>
+      <div className={s.App}>
+        <Searchbar onSubmit={this.hadleChangeImage} />
+        <ImageGallery
+          images={renderImages}
+          onClick={this.toggleModal}
+          onItemClick={this.modalContentSet}
+        />
         {openModal && (
           <Modal content={modalContent} onBackdrop={this.toggleModal} />
         )}
+        {isLoading && <LoaderComponent />}
         {btnBeView && <Button onMore={this.handleNextPage} />}
-      </>
+      </div>
     );
   }
 }
+//
