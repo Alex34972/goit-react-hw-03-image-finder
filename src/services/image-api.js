@@ -9,7 +9,7 @@ function fetchImages(nextName, page) {
       return response.json();
     }
 
-    return Promise.reject(new Error(`Нет картинок с именем ${nextName}`));
+    return Promise.reject(new Error("No response from server"));
   });
 }
 
