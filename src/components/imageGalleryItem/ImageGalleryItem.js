@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import s from "./ImageGalleryItem.module.css";
 const ImageGalleryItem = ({ images }) => {
   return (
@@ -9,10 +10,14 @@ const ImageGalleryItem = ({ images }) => {
             src={image.webformatURL}
             alt={image.tags}
             className={s.ImageGalleryItem__image}
+            onClick={() => this.modalContent(image.id)}
           />
         </li>
       ))}
     </>
   );
+};
+ImageGalleryItem.propTypes = {
+  onItemClick: PropTypes.func.isRequired,
 };
 export default ImageGalleryItem;
