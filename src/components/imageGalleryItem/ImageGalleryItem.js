@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import s from "./ImageGalleryItem.module.css";
-const ImageGalleryItem = ({ images }) => {
+const ImageGalleryItem = ({ images, modalContent }) => {
   return (
     <>
       {images.map((image) => (
