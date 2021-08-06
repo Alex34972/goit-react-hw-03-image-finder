@@ -7,7 +7,9 @@ export default class Searchbar extends Component {
     searchImages: "",
   };
   handleNameChange = (event) => {
-    this.setState({ searchImages: event.currentTarget.value.toLowerCase() });
+    this.setState({
+      searchImages: event.currentTarget.value.toLowerCase().trim(),
+    });
   };
   handleSubmit = (event) => {
     event.preventDefault();
