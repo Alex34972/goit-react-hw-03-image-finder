@@ -6,12 +6,22 @@ import s from "./Modal.module.css";
 const modalRoot = document.getElementById("modal-root");
 
 export default class Modal extends Component {
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
   handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      this.props.onBackdrop();
+      this.props.onClose();
     }
   };
-
+  handleKeyDown = (e) => {
+    if (e.code === `Escape`) {
+      this.props.onClose();
+    }
+  };
   render() {
     const { content } = this.props;
     return createPortal(
@@ -25,6 +35,6 @@ export default class Modal extends Component {
   }
 }
 Modal.propTypes = {
-  onBackdrop: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   content: PropTypes.string.isRequired,
 };
