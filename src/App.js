@@ -1,6 +1,5 @@
 import React from "react";
 import { Component } from "react";
-import { toast } from "react-toastify";
 import Searchbar from "./components/searchbar";
 import Button from "./components/button";
 import s from "./App.module.css";
@@ -17,6 +16,7 @@ export default class App extends Component {
     renderImages: [],
     isLoading: false,
     openModal: false,
+    error: null,
   };
 
   hadleChangeImage = (image) => {
@@ -62,7 +62,7 @@ export default class App extends Component {
           });
         })
         .then(this.onScroll)
-        .catch((error) => toast(error))
+        .catch((error) => this.setState({ error }))
         .finally(this.toggleLoading);
     }
   }
@@ -82,7 +82,7 @@ export default class App extends Component {
           onItemClick={this.modalContentSet}
         />
         {openModal && (
-          <Modal content={modalContent} onBackdrop={this.toggleModal} />
+          <Modal content={modalContent} onClose={this.toggleModal} />
         )}
         {isLoading && <LoaderComponent />}
         {btnBeView && <Button onMore={this.handleNextPage} />}
@@ -90,4 +90,3 @@ export default class App extends Component {
     );
   }
 }
-//
