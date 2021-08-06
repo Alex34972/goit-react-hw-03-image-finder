@@ -5,7 +5,7 @@ export default class LoaderComponent extends Component {
   render() {
     return (
       <div className={s.Loader}>
-        <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />;
+        <Loader type="Bars" color="#00BFFF" height={80} width={80} />;
       </div>
     );
   }
