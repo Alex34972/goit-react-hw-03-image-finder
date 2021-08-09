@@ -70,9 +70,7 @@ export default class App extends Component {
     const { renderImages, isLoading, page, modalContent, openModal } =
       this.state;
     const isNotLastPage = renderImages.length / page === 12;
-    console.log(isNotLastPage);
     const btnBeView = renderImages.length > 0 && isNotLastPage;
-    console.log(btnBeView);
     return (
       <div className={s.App}>
         <Searchbar onSubmit={this.hadleChangeImage} />
