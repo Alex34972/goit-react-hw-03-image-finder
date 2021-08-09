@@ -8,14 +8,16 @@ export default class ImageGalleryItem extends Component {
     this.props.onItemClick(id);
   };
   render() {
-    const { id, webformatURL } = this.props;
+    const { id, webformatURL, tags } = this.props;
     return (
-      <img
-        src={webformatURL}
-        alt=""
-        className={s.ImageGalleryItem_image}
-        onClick={() => this.modalContent(id)}
-      />
+      <li className={s.ImageGalleryItem}>
+        <img
+          src={webformatURL}
+          alt={tags}
+          className={s.ImageGalleryItem_image}
+          onClick={() => this.modalContent(id)}
+        />
+      </li>
     );
   }
 }
