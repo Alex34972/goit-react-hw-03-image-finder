@@ -16,9 +16,11 @@ export default class ImageGallery extends Component {
       <ul className={s.ImageGallery} onClick={this.handleOpenModal}>
         {images &&
           images.map((image) => (
-            <li key={image.id} className={s.ImageGalleryItem}>
-              <ImageGalleryItem {...image} onItemClick={onItemClick} />
-            </li>
+            <ImageGalleryItem
+              {...image}
+              onItemClick={onItemClick}
+              key={image.id}
+            />
           ))}
       </ul>
     );
