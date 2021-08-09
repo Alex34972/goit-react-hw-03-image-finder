@@ -9,6 +9,7 @@ export default class ImageGalleryItem extends Component {
   };
   render() {
     const { id, webformatURL, tags } = this.props;
+    console.log(id);
     return (
       <li className={s.ImageGalleryItem}>
         <img
